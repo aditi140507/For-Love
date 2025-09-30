@@ -18,6 +18,42 @@
       text-align: center;
       padding: 2rem;
     }
+
+    /* Heart button */
+    .heart {
+      width: 100px;
+      height: 90px;
+      background-color: red;
+      position: relative;
+      transform: rotate(-45deg);
+      cursor: pointer;
+      animation: beat 1s infinite;
+      margin: 2rem auto;
+    }
+    .heart::before,
+    .heart::after {
+      content: "";
+      width: 100px;
+      height: 90px;
+      background-color: red;
+      border-radius: 50%;
+      position: absolute;
+    }
+    .heart::before {
+      top: -50px;
+      left: 0;
+    }
+    .heart::after {
+      left: 50px;
+      top: 0;
+    }
+
+    @keyframes beat {
+      0%, 20%, 40%, 60%, 80%, 100% { transform: rotate(-45deg) scale(1); }
+      10%, 30%, 50%, 70%, 90% { transform: rotate(-45deg) scale(1.1); }
+    }
+
+    /* Message boxes */
     .box {
       background: white;
       padding: 2rem 3rem;
@@ -25,22 +61,10 @@
       box-shadow: 0 8px 20px rgba(0,0,0,0.1);
       margin-bottom: 2rem;
       max-width: 400px;
-      display: none; /* hidden by default */
+      display: none; /* hidden initially */
       animation: fadeIn 1s ease-in-out;
     }
-    .qr {
-      background: white;
-      padding: 2rem;
-      border-radius: 15px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    }
-    img {
-      cursor: pointer;
-      transition: transform 0.3s ease;
-    }
-    img:hover {
-      transform: scale(1.1);
-    }
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
@@ -48,12 +72,11 @@
   </style>
 </head>
 <body>
-  <!-- First Screen: QR Code -->
-  <div class="qr" id="qrBox">
+  <!-- First Screen -->
+  <div id="tapScreen">
     <h1>Hi Aman ❤️</h1>
-    <p>Scan or click the QR code below to unlock my messages 💕</p>
-    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=#" 
-         alt="QR Code" id="qrCode">
+    <p>Tap the heart to unlock my messages 💕</p>
+    <div class="heart" id="tapHeart"></div>
     <p>Your Sherlock Holmes 🫶🏻</p>
   </div>
 
@@ -70,9 +93,9 @@
   </div>
 
   <script>
-    // When QR is clicked, hide it and show messages
-    document.getElementById("qrCode").addEventListener("click", function() {
-      document.getElementById("qrBox").style.display = "none";
+    // Reveal messages when heart is tapped
+    document.getElementById("tapHeart").addEventListener("click", function() {
+      document.getElementById("tapScreen").style.display = "none";
       document.getElementById("msg1").style.display = "block";
       document.getElementById("msg2").style.display = "block";
     });
